@@ -1,25 +1,39 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../../styles/Home.module.css'
-import React from 'react'
-import { RootState } from '../../src/app/store'
+import React, {useEffect} from 'react'
+import { RootState } from '@app/store'
 import { useSelector, useDispatch } from 'react-redux'
-import { decrement, increment } from '../../src/features/counter/counterSlice'
-import {fetchUserById} from '../../src/features/user/userSlice'
+import { decrement, increment } from '@features/counter/counterSlice'
+// import {fetchUserById} from '@features/user/userSlice'
+// import {actions} from '@features/user/userSlice'
+import UseData from '@features/user/UseData'
+import userReducer from '@store/user'
 
 export default function Test() {
-  const count = useSelector((state: RootState) => state.counter.value)
-  const dispatch = useDispatch()
-  const { users, loading, error } = useSelector((state) => state.users)
+  const {actions} = userReducer
+  // const abc = (state: RootState) => state
+  // console.log("🚀 ~ Test ~ abc", abc())
+  const { users, } = UseData()
+  console.log("🚀 ~ Test ~ users", users)
 
-  const fetchOneUser = async (userId) => {
-    try {
-      const user = await dispatch(fetchUserById(userId)).unwrap()
-      // showToast('success', `Fetched ${user.name}`)
-    } catch (err) {
-      // showToast('error', `Fetch failed: ${err.message}`)
-    }
-  }
+  // const count = useSelector((state: RootState) => state.counter.value)
+  const dispatch = useDispatch()
+  const { loading, error } = useSelector((state: RootState) => state.users)
+const getData = () => dispatch(actions.getRecruitingTournaments())
+  useEffect(() => {
+    getData()
+  }, [])
+
+  // const fetchOneUser = async (userId: number) => {
+  //   try {
+  //     const user = await dispatch(fetchUserById(userId)).unwrap()
+  //     // console.log("🚀 ~ fetchOneUser ~ user", user)
+  //     // showToast('success', `Fetched ${user.name}`)
+  //   } catch (err) {
+  //     // showToast('error', `Fetch failed: ${err.message}`)
+  //   }
+  // }
 
   return (
     <div className={styles.container}>
@@ -35,19 +49,25 @@ export default function Test() {
         </h1>
         <div>
           <div>
+            {/* {users.entities.length > 0 && users.entities.map(item => {
+              return (
+                <div key={item.id}>
+                  {item.title}
+                </div>
+              )
+            })}
             <button
               aria-label="Increment value"
-              onClick={() => fetchOneUser(1)}
+              onClick={() => fetchOneUser(2)}
             >
               Increment
             </button>
-            <span>{count}</span>
             <button
               aria-label="Decrement value"
               onClick={() => dispatch(decrement())}
             >
               Decrement
-            </button>
+            </button> */}
           </div>
         </div>
       </main>
